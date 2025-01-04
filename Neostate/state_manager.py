@@ -37,6 +37,8 @@ class StateNotifier:
         Args:
             listener (function): A callback function to handle state updates.
         """
+ 
+        
         self._listeners.append(listener)
 
     def remove_listener(self, listener):
@@ -118,13 +120,16 @@ class Shared:
         Args:
             value: The new value to set.
         """
-        if self.formatter:
-            formatted_value = self.formatter.format(value=value)
-            setattr(self.widget, self.attribute, formatted_value)
-        else:
-            setattr(self.widget, self.attribute, value)
+        try:
+            if self.formatter:
+                formatted_value = self.formatter.format(value=value)
+                setattr(self.widget, self.attribute, formatted_value)
+            else:
+                setattr(self.widget, self.attribute, value)
 
-        self.widget.update()
+            self.widget.update()
+        except:
+            pass    
 
     def detach(self):
         """
