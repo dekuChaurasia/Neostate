@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="Neostate",  # Replace with your library's unique name
-    version="0.1.1",  # Start with an initial version
+    version="0.1.2",  # Start with an initial version
     author="Deku Chaurasia",
     author_email="angryg575@gmail.com",
     description="Welcome to Neostate! 🌈 A lightweight and intuitive library for managing shared states in Flet applications. With StateCraft, you can bind widgets to a shared state effortlessly, enabling seamless updates across your UI components with minimal boilerplate.",
