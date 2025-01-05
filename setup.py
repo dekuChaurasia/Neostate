@@ -1,15 +1,24 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="Neocraft",  # Replace with your library's unique name
-    version="0.1.0",  # Start with an initial version
+    name="Neostate",  # Replace with your library's unique name
+    version="0.1.3",  # Start with an initial version
     author="Deku Chaurasia",
     author_email="angryg575@gmail.com",
-    description="Welcome to Neocraft! 🌈 A lightweight and intuitive library for managing shared states in Flet applications. With StateCraft, you can bind widgets to a shared state effortlessly, enabling seamless updates across your UI components with minimal boilerplate.",
-    long_description=open("README.md").read(),
+    description="Welcome to Neostate! 🌈 A lightweight and intuitive library for managing shared states in Flet applications. With StateCraft, you can bind widgets to a shared state effortlessly, enabling seamless updates across your UI components with minimal boilerplate.",
+    long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/dekuChaurasia/Neocraft",  # Add your GitHub repo URL
+    url="https://github.com/dekuChaurasia/Neostate",  # Add your GitHub repo URL
     packages=find_packages(),
+    install_requires=[
+        "flet",
+        "requests",
+    ],
+    entry_points={
+        "console_scripts": [
+            "Neostate=Neostate.cli:main",
+        ],
+    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
