@@ -1,6 +1,21 @@
-### Neostate 🎨✨
 
-*Elegant State Management for Flet Applications*
+<div align="center">
+
+# Neostate 🎨✨
+
+*Elegant State Management and Efficient Routing for Flet Applications*
+
+[![My GitHub](https://img.shields.io/badge/My_Profile-000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/dekuChaurasia)
+[![Neostate on PyPI](https://img.shields.io/badge/PyPI-Neostate-0A66C2?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/Neostate/)
+
+---
+
+[![Python Versions](https://img.shields.io/pypi/pyversions/Neostate.svg)](https://pypi.org/project/Neostate/)
+[![Latest Version](https://img.shields.io/pypi/v/Neostate.svg)](https://pypi.org/project/Neostate/)
+[![License](https://img.shields.io/pypi/l/Neostate.svg)](https://pypi.org/project/Neostate/)
+[![Downloads](https://static.pepy.tech/badge/Neostate)](https://pepy.tech/project/Neostate)
+
+</div>
 
 ---
 
