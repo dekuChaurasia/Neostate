@@ -1,6 +1,4 @@
 from flet import Page,View
-
-# Custom Page Class
 class Page(Page):
     
     def swap(self, route: str, page_builder):
@@ -41,3 +39,29 @@ class Page(Page):
             self.update()
         else:
             print("No view to refresh.")
+    def set_global_error_page(cls, error_type, page_builder):
+        cls.GLOBAL_ERROR_PAGES[error_type] = page_builder
+
+    
+    def set_default_redirect(cls, route):
+        cls.DEFAULT_REDIRECT = route
+
+    
+    def register_route(cls, route: str, page_builder, guard=None, custom_redirect=None, custom_not_allowed_page=None):
+        cls.ROUTES[route] = {
+            "page_builder": page_builder,
+            "guard": guard,
+            "custom_redirect": custom_redirect,
+            "custom_not_allowed_page": custom_not_allowed_page,
+        }
+
+    
+    def register_middleware(cls, middleware):
+        cls.MIDDLEWARES.append(middleware)
+
+    
+    def apply_middlewares(cls, page, route):
+        for middleware in cls.MIDDLEWARES:
+            if not middleware(page, route):
+                return False
+        return True        
