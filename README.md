@@ -175,9 +175,20 @@ You can easily switch between **Basic** and **Advanced** routing modes:
 🏎️ **Advanced Routing:** Perfect for websites and web apps, supporting complex setups with middleware and role-based access.
 
 ---
-<a href="/docs/routing.md" target="_blank">
-  <img src="https://img.shields.io/badge/Explore%20Routing%20Documentation-blue-1abc9c?style=for-the-badge&logo=read-the-docs" alt="Explore Documentation" />
-</a>
+<div align="center">
+
+  <!-- Basic Routing Button -->
+  <a href="/docs/basic_routing.md" target="_blank">
+    <img src="https://img.shields.io/badge/Basic%20Routing-docs-1abc9c?style=for-the-badge&logo=read-the-docs" alt="Basic Routing" />
+  </a>
+
+  <!-- Advanced Routing Button -->
+  <a href="/docs/advanced_route.md" target="_blank">
+    <img src="https://img.shields.io/badge/Advanced%20Routing-docs-1abc9c?style=for-the-badge&logo=read-the-docs" alt="Advanced Routing" />
+  </a>
+
+</div>
+
 <hr style="border: 1px  #1abc9c; background-color: #1abc9c; height: px;"/>
 
 # Extras
