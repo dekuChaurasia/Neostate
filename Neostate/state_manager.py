@@ -1,4 +1,4 @@
-import flet as ft
+from flet import Text
 
 #──────────────────────────────────────────────────
 # StateNotifier Class
@@ -94,7 +94,7 @@ class Shared:
     """
     def __init__(self, widget, state_notifier, attribute, formatter=None):
         # Raise an error if formatter is used with non-ft.Text widgets
-        if formatter and not isinstance(widget, ft.Text):
+        if formatter and not isinstance(widget, Text):
             raise TypeError(
                 f"""
         +------------------------------------------------+
@@ -112,6 +112,11 @@ class Shared:
 
         # Subscribe to state changes
         self.state_notifier.add_listener(self.update_widget)
+        if self.formatter:
+                
+                setattr(self.widget, self.attribute,  self.formatter.format(value=state_notifier.value))
+        else:
+                setattr(self.widget, self.attribute, state_notifier.value)
 
     def update_widget(self, value):
         """
