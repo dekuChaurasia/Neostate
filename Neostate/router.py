@@ -185,7 +185,7 @@ def enhanced_app(target, name="",advanced_routing=False, host=None, port=0, view
         # Attach enhanced routing methods to the page object
        
 
-        def swap(route: str, page_builder):
+        def reach(route: str, page_builder):
                 
                 """
                 Navigate to a route by appending to the views stack.
@@ -199,12 +199,12 @@ def enhanced_app(target, name="",advanced_routing=False, host=None, port=0, view
                     page.go(route, transition=None)
                 else:
                      raise ValueError(
-                        "⚠️ Error: You have chosen Advanced routing, but the function 'swap()' belongs to Basic routing. "
+                        "⚠️ Error: You have chosen Advanced routing, but the function 'reach()' belongs to Basic routing. "
                         "🔧 To use this function, call the app with 'advanced_routing=False' "
                         "or Not pass Advanced routing Arguemnt at all. 🛠️"
                     )    
 
-        def reach(route: str, page_builder):
+        def swap(route: str, page_builder):
                 """
                 Navigate to a route by clearing all existing views and setting a new view.
                 :param route: Route string for the page.
@@ -217,7 +217,7 @@ def enhanced_app(target, name="",advanced_routing=False, host=None, port=0, view
                     page.go(route, transition=None)
                 else:
                      raise ValueError(
-                        "⚠️ Error: You have chosen Advanced routing, but the function 'reach()' belongs to Basic routing. "
+                        "⚠️ Error: You have chosen Advanced routing, but the function 'swap()' belongs to Basic routing. "
                         "🔧 To use this function, call the app with 'advanced_routing=False' "
                         "or Not pass Advanced routing Arguemnt at all. 🛠️"
                     )     
