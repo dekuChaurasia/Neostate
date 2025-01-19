@@ -45,24 +45,14 @@ Now, let’s define the pages and see how to navigate between them.
 
 ```python
 def home_page(page: Page):
-    page.add(ft.Text("Welcome to the Home Page!"))
-    page.add(ft.Button("Go to Next Page", on_click=lambda e: page.swap()))
+    return [ft.Text("Welcome to the Home Page!"),
+    ft.Button("Go to Next Page", on_click=lambda e: page.swap())]
 ```
 
 In this example:
 - The `home_page` adds a **Text** widget and a **Button**.
 - When the button is clicked, it triggers the `page.swap()` function, which swaps the current page with a new one.
 
-#### Next Page 🚀
-
-```python
-def next_page(page: Page):
-    page.add(ft.Text("This is the Next Page"))
-    page.add(ft.Button("Back to Home", on_click=lambda e: page.back()))
-```
-
-Here:
-- The `next_page` shows a **Text** widget and a **Button** that will go back to the Home page using the `page.back()` method.
 
 #### Full Navigation Example 🔄
 
@@ -72,13 +62,13 @@ from Neostate import app, Page
 
 # Home page function
 def home_page(page: Page):
-    page.add(ft.Text("Welcome to the Home Page!"))
-    page.add(ft.Button("Go to Next Page", on_click=lambda e: page.swap()))
+    return [ft.Text("Welcome to the Home Page!"),
+    ft.Button("Go to Next Page", on_click=lambda e: page.swap())]
 
 # Next page function
 def next_page(page: Page):
-    page.add(ft.Text("This is the Next Page"))
-    page.add(ft.Button("Back to Home", on_click=lambda e: page.back()))
+    return [ft.Text("This is the Next Page"),
+    ft.Button("Back to Home", on_click=lambda e: page.back())]
 
 def main(page: Page):
     page.horizontal_alignment = 'center'
@@ -108,9 +98,7 @@ Here’s a breakdown of the main navigation functions:
 Sometimes, instead of swapping or navigating, you may want to refresh the current page, especially if there’s new data to display.
 
 ```python
-def refresh_page(page: Page):
-    page.add(ft.Text("This page has been refreshed!"))
-    page.add(ft.Button("Refresh Again", on_click=lambda e: page.refresh()))
+page.refresh()   #it refreshes the current page
 ```
 
 In this example, clicking the "Refresh Again" button will trigger the `page.refresh()` method, causing the page to refresh.
@@ -120,9 +108,7 @@ In this example, clicking the "Refresh Again" button will trigger the `page.refr
 To navigate back to the previous page, you can use the `page.back()` method, like this:
 
 ```python
-def previous_page(page: Page):
-    page.add(ft.Text("You are on the Previous Page"))
-    page.add(ft.Button("Back to Home", on_click=lambda e: page.back()))
+page.back()  
 ```
 
 In this case, the button will take the user back to the Home page when clicked.
@@ -214,17 +200,17 @@ In this case, the current content is replaced with the new page, and there is no
 
 ```python
 import flet as ft
-from NeoRoute import app, Page
+from Neostate import app, Page
 
 # Home page function
 def home_page(page: Page):
-    page.add(ft.Text("Welcome to the Home Page!"))
-    page.add(ft.Button("Go to Next Page", on_click=lambda e: page.reach("/next", next_page)))
+   return [ ft.Text("Welcome to the Home Page!"),
+    ft.Button("Go to Next Page", on_click=lambda e: page.reach("/next", next_page))]
 
 # Next page function
 def next_page(page: Page):
-    page.add(ft.Text("This is the Next Page"))
-    page.add(ft.Button("Back to Home", on_click=lambda e: page.back()))  # This will return to the home page
+    return [ft.Text("This is the Next Page"),
+    ft.Button("Back to Home", on_click=lambda e: page.back())]  # This will return to the home page
 
 # Main app function
 def main(page: Page):
@@ -246,17 +232,17 @@ app(target=main)
 
 ```python
 import flet as ft
-from NeoRoute import app, Page
+from Neostate import app, Page
 
 # Home page function
 def home_page(page: Page):
-    page.add(ft.Text("Welcome to the Home Page!"))
-    page.add(ft.Button("Go to Next Page", on_click=lambda e: page.swap(next_page)))
+    return [ft.Text("Welcome to the Home Page!"),
+    ft.Button("Go to Next Page", on_click=lambda e: page.swap(next_page))]
 
 # Next page function
 def next_page(page: Page):
-    page.add(ft.Text("This is the Next Page"))
-    page.add(ft.Button("Back to Home", on_click=lambda e: page.swap(home_page)))  # Swap back to home page
+    return [ft.Text("This is the Next Page"),
+    ft.Button("Back to Home", on_click=lambda e: page.swap(home_page))] # Swap back to home page
 
 # Main app function
 def main(page: Page):
