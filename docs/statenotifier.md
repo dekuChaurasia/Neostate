@@ -1,5 +1,14 @@
 ## 🌐 Shared State Overview
-
+####NOW YOU JUST NEED TO WRAP WIDGETS WITH SHARED() , NO NEED TO PASS ATTRIBUTE , OR STATENOTIFIER
+## EXAMPLE
+```Python
+statex=StateNotifier(0)
+textbox= Shared(
+             ft.Text(value=statex)
+             )
+```
+#### Done
+## DOCS WILL BE UPDATED SOON
 This guide will take you from the basics to advanced use cases, teaching you how to:
 1. Bind widgets to a shared state.
 2. Use formatters for custom value display.
