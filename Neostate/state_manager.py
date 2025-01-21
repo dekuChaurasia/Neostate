@@ -1,5 +1,5 @@
-from flet import Text
-
+import warnings
+from typing import Callable
 #──────────────────────────────────────────────────
 # StateNotifier Class
 #──────────────────────────────────────────────────
@@ -7,13 +7,13 @@ class StateNotifier:
     """
     A utility class to manage shared state and notify listeners about updates.
 
-    Attributes:
-        _value: Holds the current value of the shared state.
-        _listeners: A list of functions (listeners) that are triggered upon state changes.
+    Example:
+        color = StateNotifier("red")
+        color.value = "blue"  # Updates all listeners
     """
     def __init__(self, value):
-        self._value = value  # Initial state value
-        self._listeners = []  # List of listeners to notify
+        self._value = value
+        self._listeners = []
 
     @property
     def value(self):
@@ -23,102 +23,104 @@ class StateNotifier:
     @value.setter
     def value(self, new_value):
         """
-        Set a new value for the shared state.
-        Automatically notifies listeners if the value changes.
+        Set a new value for the shared state and notify listeners.
         """
         if self._value != new_value:
             self._value = new_value
             self.notify_listeners()
 
-    def add_listener(self, listener):
-        """
-        Add a listener function to be notified on state changes.
-
-        Args:
-            listener (function): A callback function to handle state updates.
-        """
- 
-        
-        self._listeners.append(listener)
-
-    def remove_listener(self, listener):
-        """
-        Remove a listener function from the notification list.
-
-        Args:
-            listener (function): The listener to remove.
-        """
-        if listener in self._listeners:
-            self._listeners.remove(listener)
-
     def notify_listeners(self):
-        """
-        Notify all registered listeners about the current state value.
-
-        Raises:
-            AttributeError: If a listener is invalid.
-
-        ASCII Example:
-        +-----------------------------------+
-        | NOTIFYING ALL REGISTERED LISTENERS |
-        +-----------------------------------+
-        """
+        """Notify all registered listeners about the current state value."""
         for listener in self._listeners:
             try:
                 listener(self._value)
             except Exception as e:
                 print(f"[ERROR]: {e}")
 
+    def add_listener(self, listener):
+        """Add a listener function to be notified on state changes."""
+        self._listeners.append(listener)
+
+    def remove_listener(self, listener):
+        """Remove a listener function from the notification list."""
+        if listener in self._listeners:
+            self._listeners.remove(listener)
+
+    def __str__(self):
+        """String representation of the current value."""
+        return str(self._value)
+
+    def __repr__(self):
+        return f"StateNotifier(value={self._value})"
+
 
 #──────────────────────────────────────────────────
 # Shared Class
 #──────────────────────────────────────────────────
+class Formatter:
+    def __init__(self,value:StateNotifier,format: Callable[[any], any]) -> None:
+        if not isinstance(value, StateNotifier):
+            raise TypeError("value must be an instance of StateNotifier.")
+        
+        if not callable(format):
+            raise TypeError("formatter must be a callable function.")
+        
+        self.value=value
+        self.formatter=format
 class Shared:
     """
-    Bind a widget to a shared state using a StateNotifier.
+    Automatically binds a Flet widget's attributes to shared states using StateNotifier.
 
-    Automatically updates the widget when the state changes.
-
-    Parameters:
-        widget: The Flet widget to bind.
-        state_notifier (StateNotifier): Manages the shared state.
-        attribute (str): The widget attribute to update (e.g., "value").
-        formatter (str, optional): A string formatter (only for ft.Text widgets).
-
-    ASCII Example (for errors):
-
-        +----------------------------------------+
-        | ERROR: FORMATTER ONLY ALLOWED FOR TEXT |
-        +----------------------------------------+
-
+    Example:
+        State1 = StateNotifier("red")
+        widget = Shared(Text(value=f"Color is {State1}", bgcolor=State1))
     """
-    def __init__(self, widget, state_notifier, attribute, formatter=None):
-        # Raise an error if formatter is used with non-ft.Text widgets
-        if formatter and not isinstance(widget, Text):
-            raise TypeError(
-                f"""
-        +------------------------------------------------+
-        | ERROR: FORMATTER ONLY ALLOWED FOR TEXT WIDGETS |
-        +------------------------------------------------+
-
-         Provided: {type(widget).__name__}.
-         Details: widget={widget}"""
-            )
-
-        self.widget = widget
-        self.state_notifier = state_notifier
-        self.attribute = attribute
+    def __init__(self, widget,formatter = None):
         self.formatter = formatter
+        self.widget = widget
+        self.bind_attributes(widget)
+    
+    def bind_attributes(self, widget):
+        """
+        Binds widget attributes that reference StateNotifier objects.
+        """
+        # with warnings.catch_warnings():
+        #   warnings.simplefilter("ignore", DeprecationWarning) 
+        #   for attr_name in dir(widget):
+        #     if not attr_name.startswith("_"):
+        #         attr_value = getattr(widget, attr_name, None)
+        #         if isinstance(attr_value, StateNotifier):
+                    
+        #             # Attach listener for StateNotifier
+        #             attr_value.add_listener(lambda value, attr=attr_name: self.update_widget(attr, value))
+        #             # Initialize with the current state value
+                    
+        
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning) 
+            
+            # Define a helper function for checking if attribute value is a StateNotifier
+            def attach_listener(attr_name, widget):
+                attr_value = getattr(widget, attr_name, None)
+                if isinstance(attr_value, StateNotifier) :
+                    # Attach listener for StateNotifier
+                    attr_value.add_listener(lambda value, attr=attr_name: self.update_widget(attr, value))
+                    # Initialize with the current state value
+                    if self.formatter:
+                        setattr(self.widget, attr_name,self.formatter(attr_value.value) )
+                elif  isinstance(attr_value,Formatter):
+                    attr_value.value.add_listener(lambda value,formatte=attr_value.formatter, attr=attr_name: self.formatted_update_widget(attr, value,formatte))
+                    # Initialize with the current state value
+                    
+                    setattr(self.widget, attr_name,attr_value.formatter(attr_value.value.value) )        
 
-        # Subscribe to state changes
-        self.state_notifier.add_listener(self.update_widget)
-        if self.formatter:
-                
-                setattr(self.widget, self.attribute,  self.formatter.format(value=state_notifier.value))
-        else:
-                setattr(self.widget, self.attribute, state_notifier.value)
-
-    def update_widget(self, value):
+            # Use filter to get attributes without the leading underscore
+            attrs = filter(lambda attr: not attr.startswith("_"), dir(widget))
+            
+            # Apply the helper function for each relevant attribute
+            list(map(lambda attr: attach_listener(attr, widget), attrs))
+            del attrs
+    def formatted_update_widget(self, attr_name, value,formatter):
         """
         Update the widget's attribute when the shared state changes.
 
@@ -126,28 +128,25 @@ class Shared:
             value: The new value to set.
         """
         try:
-            if self.formatter:
-                formatted_value = self.formatter.format(value=value)
-                setattr(self.widget, self.attribute, formatted_value)
-            else:
-                setattr(self.widget, self.attribute, value)
+           
+            setattr(self.widget, attr_name,formatter(value) )  
+            self.widget.update()
+        except Exception as e:
+            print(f"[ERROR in Shared]: {e}")    
+    def update_widget(self, attr_name, value):
+        """
+        Update the widget's attribute when the shared state changes.
+
+        Args:
+            value: The new value to set.
+        """
+        try:
+              
+            setattr(self.widget, attr_name,self.formatter(value) if self.formatter else value)
 
             self.widget.update()
-        except:
-            pass    
-
-    def detach(self):
-        """
-        Detach this widget from the StateNotifier's listeners.
-
-        ASCII Example:
-
-        +---------------------------+
-        | DETACHING WIDGET LISTENER |
-        +---------------------------+
-        """
-        self.state_notifier.remove_listener(self.update_widget)
-
+        except Exception as e:
+            print(f"[ERROR in Shared]: {e}")
     def __getattr__(self, attr):
         """
         Fallback to the underlying widget's attributes.
@@ -172,3 +171,58 @@ class Shared:
         else:
             setattr(self.widget, attr, value)
   
+    
+    def __str__(self):
+        return str(self.widget)
+
+    def __repr__(self):
+        return f"Shared(widget={self.widget})"
+
+
+#──────────────────────────────────────────────────
+# Usage Example
+#──────────────────────────────────────────────────
+# import flet as ft
+
+# def main(page: ft.Page):
+    
+
+    
+    
+    
+#     State1 = StateNotifier(0)
+   
+#     page.scroll=ft.ScrollMode.ALWAYS    
+    
+    
+    
+    
+    
+#     def Change_state(e):
+#         State1.value=int(e.control.value)
+        
+    
+#     colors=['red','blue','green','yellow','purple']
+ 
+#     data =Center( 
+#         ft.Column([Shared(ft.Text(weight=ft.FontWeight.BOLD,size=25,
+#                               value=Formatter(value=State1,format=lambda value: f'border Radius is {value}')
+#         )),
+#         ft.Column([Shared(
+#                         ft.Container(bgcolor=colors[color],
+                                     
+#                                     height=Formatter(value=State1,format= lambda value,color=color : value*(color+1)),
+#                                     border_radius=State1,
+#                                     animate=ft.animation.Animation(280, ft.AnimationCurve.EASE_IN_OUT),
+#                                     width=200),
+#                          )
+#                    for color in range(len(colors))]
+#                   )
+      
+#        ,ft.Slider(max=50,min=0,on_change=Change_state)
+#     ]),force=True,expand=True)
+    
+#     page.add(data)
+
+
+# ft.app(target=main)

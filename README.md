@@ -87,7 +87,7 @@ It’s like a **team** where one member holds the information (StateNotifier) an
 
 Let me know if you'd like more details or adjustments! 😊📚
 
-<a href="/docs/statenotifier.md" target="_blank">
+<a href="https://github.com/dekuChaurasia/Neostate/blob/main/docs/statenotifier.md" target="_blank">
   <img src="https://img.shields.io/badge/Explore%20Full%20Documentation-blue-1abc9c?style=for-the-badge&logo=read-the-docs" alt="Explore Documentation" />
 </a>
 
@@ -178,12 +178,12 @@ You can easily switch between **Basic** and **Advanced** routing modes:
 <div align="center">
 
   <!-- Basic Routing Button -->
-  <a href="/docs/basic_routing.md" target="_blank">
+  <a href="https://github.com/dekuChaurasia/Neostate/blob/main/docs/basic_routing.md" target="_blank">
     <img src="https://img.shields.io/badge/Basic%20Routing-docs-1abc9c?style=for-the-badge&logo=read-the-docs" alt="Basic Routing" />
   </a>
 
   <!-- Advanced Routing Button -->
-  <a href="/docs/advanced_route.md" target="_blank">
+  <a href="https://github.com/dekuChaurasia/Neostate/blob/main/docs/advanced_route.md" target="_blank">
     <img src="https://img.shields.io/badge/Advanced%20Routing-docs-1abc9c?style=for-the-badge&logo=read-the-docs" alt="Advanced Routing" />
   </a>
 
